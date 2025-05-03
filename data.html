@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <title>Nhập dữ liệu học sinh</title>
@@ -19,11 +19,12 @@
 <body>
   <h2>Form nhập danh sách học sinh</h2>
 
-  <form action="https://script.google.com/macros/s/AKfycbwFdr7w_9rfxxHzJfoQFSWTTSy13IWw4AbJDO--MZbq3Ooal-ikpQdTmioFio3H04OVew/exec"
-        method="POST"
-        target="hidden_iframe"
-        onsubmit="document.getElementById('responseMessage').innerText='Đang gửi dữ liệu...';">
-    
+  <form 
+    action="https://script.google.com/macros/s/AKfycbwFdr7w_9rfxxHzJfoQFSWTTSy13IWw4AbJDO--MZbq3Ooal-ikpQdTmioFio3H04OVew/exec"
+    method="POST"
+    target="hidden_iframe"
+    onsubmit="handleSubmit();"
+  >
     <label>Họ và tên:</label><br>
     <input type="text" name="name" required><br>
 
@@ -36,8 +37,28 @@
     <button type="submit">Gửi dữ liệu</button>
   </form>
 
-  <iframe name="hidden_iframe" style="display:none;" onload="document.getElementById('responseMessage').innerText='Đã gửi dữ liệu thành công!'"></iframe>
+  <iframe 
+    name="hidden_iframe" 
+    style="display:none;" 
+    onload="handleIframeLoad();">
+  </iframe>
 
   <p id="responseMessage"></p>
+
+  <script>
+    let formSubmitted = false;
+
+    function handleSubmit() {
+      document.getElementById('responseMessage').innerText = 'Đang gửi dữ liệu...';
+      formSubmitted = true;
+    }
+
+    function handleIframeLoad() {
+      if (formSubmitted) {
+        document.getElementById('responseMessage').innerText = 'Đã gửi dữ liệu thành công!';
+        formSubmitted = false;
+      }
+    }
+  </script>
 </body>
 </html>
