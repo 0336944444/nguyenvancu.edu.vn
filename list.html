@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Danh sách học sinh</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 6px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <h2>Danh sách học sinh</h2>
+  <div id="tableContainer">Đang tải...</div>
+
+  <script>
+    fetch('https://script.google.com/macros/s/AKfycbyPw_zAJjpABwF1yWKJrea0l-vbsYPJcGMYRvlVr-NaRkDBy2UeZLBsCaLZLTNL_Ss5/exec')
+      .then(response => response.json())
+      .then(data => {
+        const table = document.createElement('table');
+        const header = `<tr><th>STT</th><th>ID</th><th>Họ và tên</th><th>Lớp</th><th>Trường</th></tr>`;
+        const rows = data.map(row =>
+          `<tr><td>${row.stt}</td><td>${row.id}</td><td>${row.name}</td><td>${row.class}</td><td>${row.school}</td></tr>`
+        ).join('');
+        table.innerHTML = header + rows;
+        document.getElementById('tableContainer').innerHTML = '';
+        document.getElementById('tableContainer').appendChild(table);
+      })
+      .catch(err => {
+        document.getElementById('tableContainer').innerText = 'Không thể tải dữ liệu.';
+      });
+  </script>
+</body>
+</html>
