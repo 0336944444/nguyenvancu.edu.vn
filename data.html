@@ -14,21 +14,21 @@
 
     fetch("https://script.google.com/macros/s/AKfycbwFdr7w_9rfxxHzJfoQFSWTTSy13IWw4AbJDO--MZbq3Ooal-ikpQdTmioFio3H04OVew/exec", {
       method: "POST",
-      body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json"
-      }
+      },
+      body: JSON.stringify(data)
     })
     .then(response => response.json())
     .then(result => {
       if (result.result === "success") {
-        alert("Đã gửi dữ liệu thành công (ID: " + result.id + ")");
+        document.body.insertAdjacentHTML('beforeend', `<p style="color:green">Gửi thành công! ID: ${result.id}</p>`);
       } else {
         alert("Lỗi: " + result.message);
       }
     })
-    .catch(error => {
-      alert("Lỗi gửi dữ liệu: " + error);
+    .catch(err => {
+      alert("Lỗi gửi dữ liệu: " + err);
     });
   });
 </script>
