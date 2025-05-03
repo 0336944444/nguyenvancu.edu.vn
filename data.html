@@ -23,7 +23,7 @@
     <input type="text" name="name" required><br>
 
     <label>Lớp:</label><br>
-    <input type="text" name="class" required><br>
+    <input type="text" name="classname" required><br>
 
     <label>Trường:</label><br>
     <input type="text" name="school" required><br>
@@ -39,7 +39,7 @@
 
       const form = e.target;
       const name = form.name.value.trim();
-      const className = form.class.value.trim();
+      const className = form.classname.value.trim(); // đã đổi tên tránh lỗi
       const school = form.school.value.trim();
 
       const data = {
@@ -57,8 +57,13 @@
           body: JSON.stringify(data)
         });
 
-        const text = await response.text();
-        document.getElementById("responseMessage").textContent = text;
+        const result = await response.json();
+        if (result.result === "success") {
+          document.getElementById("responseMessage").textContent = `Đã gửi dữ liệu thành công (ID: ${result.id})`;
+        } else {
+          document.getElementById("responseMessage").textContent = `Lỗi: ${result.message}`;
+        }
+
         form.reset();
       } catch (error) {
         document.getElementById("responseMessage").textContent = "Đã có lỗi xảy ra khi gửi.";
