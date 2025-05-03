@@ -19,7 +19,11 @@
 <body>
   <h2>Form nhập danh sách học sinh</h2>
 
-  <form id="dataForm">
+  <form action="https://script.google.com/macros/s/AKfycbyPw_zAJjpABwF1yWKJrea0l-vbsYPJcGMYRvlVr-NaRkDBy2UeZLBsCaLZLTNL_Ss5/exec"
+        method="POST"
+        target="hidden_iframe"
+        onsubmit="document.getElementById('responseMessage').innerText='Đang gửi dữ liệu...';">
+    
     <label>Họ và tên:</label><br>
     <input type="text" name="name" required><br>
 
@@ -32,44 +36,8 @@
     <button type="submit">Gửi dữ liệu</button>
   </form>
 
+  <iframe name="hidden_iframe" style="display:none;" onload="document.getElementById('responseMessage').innerText='Đã gửi dữ liệu thành công!'"></iframe>
+
   <p id="responseMessage"></p>
-
-  <script>
-    const form = document.getElementById("dataForm");
-    const message = document.getElementById("responseMessage");
-
-    form.addEventListener("submit", async function (e) {
-      e.preventDefault();
-
-      message.innerText = "Đang gửi dữ liệu...";
-
-      const formData = {
-        name: form.name.value,
-        class: form.class.value,
-        school: form.school.value
-      };
-
-      try {
-        const response = await fetch("https://script.google.com/macros/s/AKfycbwFdr7w_9rfxxHzJfoQFSWTTSy13IWw4AbJDO--MZbq3Ooal-ikpQdTmioFio3H04OVew/exec", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(formData)
-        });
-
-        const result = await response.json();
-        if (result.result === "success") {
-          message.innerText = "Đã gửi dữ liệu thành công! Mã ID: " + result.id;
-          form.reset();
-        } else {
-          message.innerText = "Có lỗi: " + result.message;
-        }
-      } catch (error) {
-        console.error(error);
-        message.innerText = "Không thể gửi dữ liệu. Vui lòng thử lại.";
-      }
-    });
-  </script>
 </body>
 </html>
