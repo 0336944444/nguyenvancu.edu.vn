@@ -1,62 +1,34 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Nhập dữ liệu học sinh</title>
-  <style>
-    body { font-family: sans-serif; padding: 20px; }
-    input, button { margin: 8px 0; padding: 8px; width: 100%; max-width: 300px; }
-  </style>
-</head>
-<body>
-  <h2>Form nhập danh sách học sinh</h2>
-  <form id="dataForm">
-    <label>Họ và tên:</label><br>
-    <input type="text" id="name" required><br>
+<script>
+  document.getElementById("dataForm").addEventListener("submit", function(e) {
+    e.preventDefault();
 
-    <label>Lớp:</label><br>
-    <input type="text" id="class" required><br>
+    const name = document.querySelector("input[name='name']").value;
+    const studentClass = document.querySelector("input[name='class']").value;
+    const school = document.querySelector("input[name='school']").value;
 
-    <label>Trường:</label><br>
-    <input type="text" id="school" required><br>
+    const data = {
+      name: name,
+      class: studentClass,
+      school: school
+    };
 
-    <button type="submit">Gửi dữ liệu</button>
-  </form>
-
-  <p id="result"></p>
-
-  <script>
-    const form = document.getElementById("dataForm");
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      // Tạo ID ngẫu nhiên 6 chữ số
-      const id = Math.floor(100000 + Math.random() * 900000);
-
-      const data = {
-        id: id,
-        name: document.getElementById("name").value,
-        class: document.getElementById("class").value,
-        school: document.getElementById("school").value
-      };
-
-      fetch("https://script.google.com/macros/s/AKfycbwFdr7w_9rfxxHzJfoQFSWTTSy13IWw4AbJDO--MZbq3Ooal-ikpQdTmioFio3H04OVew/exec", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
-        .then(res => res.text())
-        .then(msg => {
-          document.getElementById("result").innerText = `${msg} (ID: ${id})`;
-          form.reset();
-        })
-        .catch(err => {
-          document.getElementById("result").innerText = "Đã có lỗi xảy ra khi gửi.";
-          console.error(err);
-        });
+    fetch("https://script.google.com/macros/s/AKfycbwFdr7w_9rfxxHzJfoQFSWTTSy13IWw4AbJDO--MZbq3Ooal-ikpQdTmioFio3H04OVew/exec", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    .then(response => response.json())
+    .then(result => {
+      if (result.result === "success") {
+        alert("Đã gửi dữ liệu thành công (ID: " + result.id + ")");
+      } else {
+        alert("Lỗi: " + result.message);
+      }
+    })
+    .catch(error => {
+      alert("Lỗi gửi dữ liệu: " + error);
     });
-  </script>
-</body>
-</html>
+  });
+</script>
